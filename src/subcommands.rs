@@ -11,3 +11,11 @@ pub fn index(args: ArgMatches) {
     info!("Writing index to: {:?};", outpath);
     fasta_index.to_json(&outpath);
 }
+
+pub fn subset(args: ArgMatches) {
+    // load ids, load index
+    // use index to subset fasta file
+    // write to new file one by one
+    // if not found, continue (have to change `from_index_with_ids`)
+    unimplemented!()
+}
