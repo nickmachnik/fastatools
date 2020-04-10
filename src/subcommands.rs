@@ -1,0 +1,13 @@
+use clap::{ArgMatches};
+use fasta::{FastaIndex};
+use std::path::Path;
+
+pub fn index(args: ArgMatches) {
+    let c = args.subcommand_matches("index").unwrap();
+    let inpath = Path::new(c.value_of("input").unwrap());
+    info!("Indexing: {:?};", inpath);
+    let fasta_index = FastaIndex::new(&inpath);
+    let outpath = inpath.with_extension("index");
+    info!("Writing index to: {:?};", outpath);
+    fasta_index.to_json(&outpath);
+}
