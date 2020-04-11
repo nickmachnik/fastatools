@@ -34,17 +34,17 @@ fn main() {
             .required(true)
             .takes_value(true)
             .index(1)
-            .help("Path to input fasta file."),
+            .help("Path to input fasta file (uncompressed)"),
     );
 
-    let index = SubCommand::with_name("subset")
+    let subset = SubCommand::with_name("subset")
     .about("Subset the input fasta with the given protein ids.")
     .arg(
         Arg::with_name("fasta")
             .required(true)
             .takes_value(true)
             .index(1)
-            .help("Path to input fasta file."),
+            .help("Path to input fasta file (uncompressed)"),
     )
     .arg(
         Arg::with_name("fasta index")
@@ -73,6 +73,7 @@ fn main() {
         .author("Nick Noel Machnik <nick.machnik@gmail.com>")
         .about("Toolset for the manipulation of fasta files.")
         .subcommand(index)
+        .subcommand(subset)
         .setting(AppSettings::ArgRequiredElseHelp)
         .get_matches();
 
