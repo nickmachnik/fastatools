@@ -15,6 +15,7 @@ pub fn index(args: ArgMatches) {
     let outpath = inpath.with_extension("index");
     info!("Writing index to: {:?};", outpath);
     fasta_index.to_json(&outpath);
+    info!("All done.");
 }
 
 pub fn subset(args: ArgMatches) {
@@ -40,4 +41,5 @@ pub fn subset(args: ArgMatches) {
     let subset_map = FastaMap::from_index_with_ids(&fasta_path, &index, &ids);
     info!("Writing results: {:?};", outpath);
     subset_map.to_fasta(&outpath);
+    info!("All done.");
 }
