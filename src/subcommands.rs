@@ -1,8 +1,8 @@
-use clap::{ArgMatches};
+use clap::ArgMatches;
 use fasta::{FastaIndex, FastaMap};
-use std::path::Path;
-use std::io::{BufReader, BufRead};
 use std::ffi::OsStr;
+use std::io::{BufRead, BufReader};
+use std::path::Path;
 
 pub fn index(args: ArgMatches) {
     let c = args.subcommand_matches("index").unwrap();
@@ -27,7 +27,7 @@ pub fn subset(args: ArgMatches) {
     // load index
     let index = FastaIndex::from_json(index_path);
     // load ids
-    let mut ids: Vec<_> = Vec::new();
+    let mut ids = Vec::new();
     for line in BufReader::new(&mut fasta::open(id_path)).lines() {
         let l = line.unwrap();
         if l != "" {
@@ -35,7 +35,10 @@ pub fn subset(args: ArgMatches) {
         }
     }
     if fasta_path.extension() == Some(OsStr::new("gz")) {
-        error!("Attempted to use index on compressed file: {:?}", fasta_path);
+        error!(
+            "Attempted to use index on compressed file: {:?}",
+            fasta_path
+        );
     }
     info!("Subsetting: {:?};", fasta_path);
     let subset_map = FastaMap::from_index_with_ids(&fasta_path, &index, &ids);
