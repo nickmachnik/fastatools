@@ -29,13 +29,29 @@ fn main() {
         .init();
 
     let index = SubCommand::with_name("index")
-        .about("Index the input fasta file.")
+        .about(
+            "Index the input fasta file. \
+            Writes to input file location with '.index' extension.",
+        )
         .arg(
             Arg::with_name("input")
                 .required(true)
                 .takes_value(true)
                 .index(1)
                 .help("Path to input fasta file (uncompressed)"),
+        );
+
+    let lengths = SubCommand::with_name("lengths")
+        .about(
+            "Extract the sequence lengths from the input fasta file. \
+            Writes to input file location with '.lengths' extension.",
+        )
+        .arg(
+            Arg::with_name("input")
+                .required(true)
+                .takes_value(true)
+                .index(1)
+                .help("Path to input fasta file"),
         );
 
     let subset = SubCommand::with_name("subset")
@@ -75,6 +91,7 @@ fn main() {
         .about("Toolset for the manipulation of fasta files.")
         .subcommand(index)
         .subcommand(subset)
+        .subcommand(lengths)
         .setting(AppSettings::ArgRequiredElseHelp)
         .get_matches();
 
@@ -84,6 +101,9 @@ fn main() {
         }
         Some("subset") => {
             subcommands::subset(args);
+        }
+        Some("lengths") => {
+            subcommands::lengths(args);
         }
         Some(other) => unimplemented!("{}", other),
         None => panic!("what is supposed to happen here"),

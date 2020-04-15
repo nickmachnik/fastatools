@@ -1,5 +1,5 @@
 use clap::ArgMatches;
-use fasta::{FastaIndex, FastaMap};
+use fasta::{FastaIndex, FastaLengths, FastaMap};
 use std::ffi::OsStr;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
@@ -44,5 +44,16 @@ pub fn subset(args: ArgMatches) {
     let subset_map = FastaMap::from_index_with_ids(&fasta_path, &index, &ids);
     info!("Writing results: {:?};", outpath);
     subset_map.to_fasta(&outpath);
+    info!("All done.");
+}
+
+pub fn lengths(args: ArgMatches) {
+    let c = args.subcommand_matches("lengths").unwrap();
+    let inpath = Path::new(c.value_of("input").unwrap());
+    info!("Getting sequence lengths for: {:?};", inpath);
+    let lengths = FastaLengths::from_fasta(&inpath);
+    let outpath = inpath.with_extension("lengths");
+    info!("Writing lengths to: {:?};", outpath);
+    lengths.to_json(&outpath);
     info!("All done.");
 }
