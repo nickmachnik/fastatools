@@ -41,6 +41,19 @@ fn main() {
                 .help("Path to input fasta file (uncompressed)"),
         );
 
+    let accessions = SubCommand::with_name("accessions")
+        .about(
+            "Get the accessions from the deflines and write them to file, one per line.\
+            Accessions will be written to <input>.accessions",
+        )
+        .arg(
+            Arg::with_name("input")
+                .required(true)
+                .takes_value(true)
+                .index(1)
+                .help("Path to input fasta file"),
+        );
+
     let lengths = SubCommand::with_name("lengths")
         .about(
             "Extract the sequence lengths from the input fasta file. \
@@ -92,6 +105,7 @@ fn main() {
         .subcommand(index)
         .subcommand(subset)
         .subcommand(lengths)
+        .subcommand(accessions)
         .setting(AppSettings::ArgRequiredElseHelp)
         .get_matches();
 
@@ -104,6 +118,9 @@ fn main() {
         }
         Some("lengths") => {
             subcommands::lengths(args);
+        }
+        Some("accessions") => {
+            subcommands::accessions(args);
         }
         Some(other) => unimplemented!("{}", other),
         None => panic!("what is supposed to happen here"),
