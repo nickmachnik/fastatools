@@ -1,10 +1,3 @@
-#[macro_use]
-extern crate log;
-extern crate chrono;
-extern crate clap;
-extern crate env_logger;
-extern crate fasta;
-
 use chrono::Local;
 use clap::{App, AppSettings, Arg, SubCommand};
 use env_logger::Builder;
@@ -68,7 +61,7 @@ fn main() {
         );
 
     let subset = SubCommand::with_name("subset")
-        .about("Subset the input fasta with the given protein ids.")
+        .about("Subset the input fasta with the given protein ids. Print to stdout.")
         .arg(
             Arg::with_name("fasta")
                 .required(true)
@@ -89,13 +82,6 @@ fn main() {
                 .takes_value(true)
                 .index(3)
                 .help("Extract sequences with these ids from the fasta. One id per row."),
-        )
-        .arg(
-            Arg::with_name("output file")
-                .required(true)
-                .takes_value(true)
-                .index(4)
-                .help("Write output fasta to this path."),
         );
 
     let args = App::new("fastatools")
