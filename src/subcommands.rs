@@ -1,5 +1,7 @@
 use clap::ArgMatches;
-use fasta::{FastaAccessions, FastaIndex, FastaLengths, FastaMap};
+use fasta::{FastaAccessions, FastaEntry, FastaIndex, FastaLengths};
+use log::{error, info};
+use rayon::prelude::*;
 use std::ffi::OsStr;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
@@ -37,7 +39,12 @@ pub fn subset(args: ArgMatches) {
     let index_path = Path::new(c.value_of("fasta index").unwrap());
     let id_path = Path::new(c.value_of("protein ids").unwrap());
     let fasta_path = Path::new(c.value_of("fasta").unwrap());
-    let outpath = Path::new(c.value_of("output file").unwrap());
+    if fasta_path.extension() == Some(OsStr::new("gz")) {
+        error!(
+            "Attempted to use index on compressed file: {:?}",
+            fasta_path
+        );
+    }
     // load index
     info!("Loading index from: {:?};", index_path);
     let index = FastaIndex::from_json(index_path).expect("Reading index from file failed!");
@@ -49,16 +56,13 @@ pub fn subset(args: ArgMatches) {
             ids.push(l);
         }
     }
-    if fasta_path.extension() == Some(OsStr::new("gz")) {
-        error!(
-            "Attempted to use index on compressed file: {:?}",
-            fasta_path
-        );
-    }
     info!("Subsetting: {:?};", fasta_path);
-    let subset_map = FastaMap::from_index_with_ids(&fasta_path, &index, &ids);
-    info!("Writing results: {:?};", outpath);
-    subset_map.to_fasta(&outpath);
+    ids.par_iter()
+        .filter_map(|e| index.id_to_offset.get(e))
+        .for_each(|i| {
+            let entry = FastaEntry::from_index(&fasta_path, *i).unwrap();
+            println!("{}\n{}\n\n", entry.description, entry.sequence);
+        });
     info!("All done.");
 }
 
