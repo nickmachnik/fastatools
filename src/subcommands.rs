@@ -39,6 +39,7 @@ pub fn subset(args: ArgMatches) {
     let fasta_path = Path::new(c.value_of("fasta").unwrap());
     let outpath = Path::new(c.value_of("output file").unwrap());
     // load index
+    info!("Loading index from: {:?};", index_path);
     let index = FastaIndex::from_json(index_path).expect("Reading index from file failed!");
     // load ids
     let mut ids = Vec::new();
