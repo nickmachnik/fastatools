@@ -61,7 +61,7 @@ pub fn subset(args: ArgMatches) {
         .filter_map(|e| index.id_to_offset.get(e))
         .for_each(|i| {
             let entry = FastaEntry::from_index(&fasta_path, *i).unwrap();
-            println!("{}\n{}\n\n", entry.description, entry.sequence);
+            println!("{}\n{}\n", entry.description, entry.sequence);
         });
     info!("All done.");
 }
