@@ -47,7 +47,7 @@ fn main() {
                 ),
         )
         .arg(
-            Arg::with_name("id index")
+            Arg::with_name("id-index")
                 .long("id-index")
                 .short("i")
                 .required(false)
