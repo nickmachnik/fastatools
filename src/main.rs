@@ -35,14 +35,28 @@ fn main() {
         )
         .arg(
             Arg::with_name("separator")
+                .long("separator")
+                .short("s")
                 .required(false)
                 .takes_value(true)
-                .index(2)
                 .help(
                     "Separator string in the description file. \
                     Is used to split the description and get the sequence ID, \
                     assumed to be at the first position of the split description.\
                     Default: `|`",
+                ),
+        )
+        .arg(
+            Arg::with_name("id index")
+                .long("id-index")
+                .short("i")
+                .required(false)
+                .takes_value(true)
+                .help(
+                    "0-based index of the description field that is used \
+                    as a unique sequence id after splitting with the specified \
+                    separator. \
+                    Default: `0`",
                 ),
         );
 

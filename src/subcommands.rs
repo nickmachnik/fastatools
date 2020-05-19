@@ -25,8 +25,18 @@ pub fn index(args: ArgMatches) {
         error!("Attempted to index compressed file: {:?}", inpath);
     }
     let separator = c.value_of("separator").unwrap_or("|");
+    info!("Using separator: {:?};", separator);
+
+    let id_index = if let Some(val) = c.value_of("id-index") {
+        val.parse()
+            .expect("Could not parse provided id-index as integer")
+    } else {
+        1
+    };
+    info!("Using id index: {:?};", id_index);
+
     info!("Indexing: {:?};", inpath);
-    let fasta_index = FastaIndex::new(&inpath, separator);
+    let fasta_index = FastaIndex::new(&inpath, separator, id_index);
     let outpath = inpath.with_extension("index");
     info!("Writing index to: {:?};", outpath);
     fasta_index
