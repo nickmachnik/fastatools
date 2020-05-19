@@ -32,6 +32,18 @@ fn main() {
                 .takes_value(true)
                 .index(1)
                 .help("Path to input fasta file (uncompressed)"),
+        )
+        .arg(
+            Arg::with_name("separator")
+                .required(false)
+                .takes_value(true)
+                .index(2)
+                .help(
+                    "Separator string in the description file. \
+                    Is used to split the description and get the sequence ID, \
+                    assumed to be at the first position of the split description.\
+                    Default: `|`",
+                ),
         );
 
     let accessions = SubCommand::with_name("accessions")

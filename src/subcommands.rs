@@ -24,8 +24,9 @@ pub fn index(args: ArgMatches) {
     if inpath.extension() == Some(OsStr::new("gz")) {
         error!("Attempted to index compressed file: {:?}", inpath);
     }
+    let separator = c.value_of("separator").unwrap_or("|");
     info!("Indexing: {:?};", inpath);
-    let fasta_index = FastaIndex::new(&inpath);
+    let fasta_index = FastaIndex::new(&inpath, separator);
     let outpath = inpath.with_extension("index");
     info!("Writing index to: {:?};", outpath);
     fasta_index
