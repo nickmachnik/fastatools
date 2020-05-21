@@ -103,7 +103,7 @@ fn main() {
                 .help("Path to input fasta index (create with `fastatools index`)"),
         )
         .arg(
-            Arg::with_name("protein ids")
+            Arg::with_name("target ids")
                 .required(true)
                 .takes_value(true)
                 .index(3)
@@ -127,7 +127,7 @@ fn main() {
                 .help("Path to input fasta index (create with `fastatools index`)"),
         )
         .arg(
-            Arg::with_name("index id")
+            Arg::with_name("target id")
                 .required(true)
                 .takes_value(true)
                 .index(3)
