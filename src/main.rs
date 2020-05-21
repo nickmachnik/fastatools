@@ -62,7 +62,7 @@ fn main() {
 
     let accessions = SubCommand::with_name("accessions")
         .about(
-            "Get the accessions from the deflines and write them to file, one per line.\
+            "Get the accessions from the deflines and write them to file, one per line. \
             Accessions will be written to <input>.accessions",
         )
         .arg(
