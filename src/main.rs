@@ -23,7 +23,7 @@ fn main() {
 
     let index = SubCommand::with_name("index")
         .about(
-            "Index the input fasta file. \
+            "Indexes a fasta file. \
             Writes to input file location with '.index' extension.",
         )
         .arg(
@@ -62,8 +62,8 @@ fn main() {
 
     let accessions = SubCommand::with_name("accessions")
         .about(
-            "Get the accessions from the deflines and write them to file, one per line. \
-            Accessions will be written to <input>.accessions",
+            "Gets accessions from fastas deflines and writes them to file, one per line. \
+            Accessions are written to <input>.accessions",
         )
         .arg(
             Arg::with_name("input")
@@ -75,7 +75,7 @@ fn main() {
 
     let lengths = SubCommand::with_name("lengths")
         .about(
-            "Extract the sequence lengths from the input fasta file. \
+            "Extracts the sequence lengths from a fasta file. \
             Writes to input file location with '.lengths' extension.",
         )
         .arg(
@@ -87,7 +87,7 @@ fn main() {
         );
 
     let subset = SubCommand::with_name("subset")
-        .about("Subset the input fasta with the given protein ids. Print to stdout.")
+        .about("Subsets a fasta file with a set of protein ids protein ids. Print to stdout.")
         .arg(
             Arg::with_name("fasta")
                 .required(true)
@@ -110,6 +110,30 @@ fn main() {
                 .help("Extract sequences with these ids from the fasta. One id per row."),
         );
 
+    let get_entry = SubCommand::with_name("get-entry")
+        .about("Prints an entry with a given index id from a fasta file.")
+        .arg(
+            Arg::with_name("fasta")
+                .required(true)
+                .takes_value(true)
+                .index(1)
+                .help("Path to input fasta file (uncompressed)"),
+        )
+        .arg(
+            Arg::with_name("fasta index")
+                .required(true)
+                .takes_value(true)
+                .index(2)
+                .help("Path to input fasta index (create with `fastatools index`)"),
+        )
+        .arg(
+            Arg::with_name("index id")
+                .required(true)
+                .takes_value(true)
+                .index(3)
+                .help("ID of the target entry, as specified in the fasta index."),
+        );
+
     let args = App::new("fastatools")
         .version("0.1.0")
         .author("Nick Noel Machnik <nick.machnik@gmail.com>")
@@ -118,6 +142,7 @@ fn main() {
         .subcommand(subset)
         .subcommand(lengths)
         .subcommand(accessions)
+        .subcommand(get_entry)
         .setting(AppSettings::ArgRequiredElseHelp)
         .get_matches();
 
@@ -133,6 +158,9 @@ fn main() {
         }
         Some("accessions") => {
             subcommands::accessions(args);
+        }
+        Some("get-entry") => {
+            subcommands::get_entry(args);
         }
         Some(other) => unimplemented!("{}", other),
         None => panic!("what is supposed to happen here"),
