@@ -45,10 +45,32 @@ pub fn index(args: ArgMatches) {
     info!("All done.");
 }
 
+pub fn get_entry(args: ArgMatches) {
+    let c = args.subcommand_matches("get-entry").unwrap();
+    let index_path = Path::new(c.value_of("fasta index").unwrap());
+    let fasta_path = Path::new(c.value_of("fasta").unwrap());
+    if fasta_path.extension() == Some(OsStr::new("gz")) {
+        error!(
+            "Attempted to use index on compressed file: {:?}",
+            fasta_path
+        );
+    }
+    // load index
+    let index = FastaIndex::from_json(index_path).expect("Reading index from file failed!");
+    let target_id = c.value_of("target id").unwrap();
+    if let Some(target_index) = index.id_to_offset.get(target_id) {
+        let entry = FastaEntry::from_index(&fasta_path, *target_index)
+            .expect("Error while accessing fasta at index.");
+        println!("{}\n{}\n", entry.description, entry.sequence);
+    } else {
+        error!("Target id not found in index!")
+    }
+}
+
 pub fn subset(args: ArgMatches) {
     let c = args.subcommand_matches("subset").unwrap();
     let index_path = Path::new(c.value_of("fasta index").unwrap());
-    let id_path = Path::new(c.value_of("protein ids").unwrap());
+    let id_path = Path::new(c.value_of("target ids").unwrap());
     let fasta_path = Path::new(c.value_of("fasta").unwrap());
     if fasta_path.extension() == Some(OsStr::new("gz")) {
         error!(
