@@ -21,6 +21,33 @@ fn main() {
         .filter(None, LevelFilter::Info)
         .init();
 
+    let separator = Arg::with_name("separator")
+        .long("separator")
+        .short("s")
+        .required(false)
+        .takes_value(true)
+        .global(true)
+        .default_value("|")
+        .help(
+            "Separator string in the description file. \
+                    Is used to split the description and get the sequence ID, \
+                    assumed to be at the first position of the split description.\
+                    Default: `|`",
+        );
+
+    let id_index = Arg::with_name("id-index")
+        .long("id-index")
+        .short("i")
+        .required(false)
+        .takes_value(true)
+        .default_value("1")
+        .help(
+            "0-based index of the description field that is used \
+                    as a unique sequence id after splitting with the specified \
+                    separator. \
+                    Default: `1`",
+        );
+
     let index = SubCommand::with_name("index")
         .about(
             "Indexes a fasta file. \
@@ -32,32 +59,6 @@ fn main() {
                 .takes_value(true)
                 .index(1)
                 .help("Path to input fasta file (uncompressed)"),
-        )
-        .arg(
-            Arg::with_name("separator")
-                .long("separator")
-                .short("s")
-                .required(false)
-                .takes_value(true)
-                .help(
-                    "Separator string in the description file. \
-                    Is used to split the description and get the sequence ID, \
-                    assumed to be at the first position of the split description.\
-                    Default: `|`",
-                ),
-        )
-        .arg(
-            Arg::with_name("id-index")
-                .long("id-index")
-                .short("i")
-                .required(false)
-                .takes_value(true)
-                .help(
-                    "0-based index of the description field that is used \
-                    as a unique sequence id after splitting with the specified \
-                    separator. \
-                    Default: `0`",
-                ),
         );
 
     let accessions = SubCommand::with_name("accessions")
@@ -138,6 +139,8 @@ fn main() {
         .version("0.1.0")
         .author("Nick Noel Machnik <nick.machnik@gmail.com>")
         .about("Toolset for the manipulation of fasta files.")
+        .arg(id_index)
+        .arg(separator)
         .subcommand(index)
         .subcommand(subset)
         .subcommand(lengths)

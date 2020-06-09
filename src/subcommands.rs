@@ -10,7 +10,15 @@ use std::path::Path;
 pub fn accessions(args: ArgMatches) {
     let c = args.subcommand_matches("accessions").unwrap();
     let inpath = Path::new(c.value_of("input").unwrap());
-    let accessions = FastaAccessions::from_fasta(&inpaths);
+    let separator = c.value_of("separator").unwrap();
+    info!("Using separator: {:?};", separator);
+    let id_index = c
+        .value_of("id-index")
+        .unwrap()
+        .parse()
+        .expect("Could not parse provided id-index as integer");
+    info!("Using id index: {:?};", id_index);
+    let accessions = FastaAccessions::from_fasta(&inpath, separator, id_index);
     let outpath = inpath.with_extension("accessions");
     info!("Writing accessions to: {:?};", outpath);
     accessions
@@ -25,17 +33,14 @@ pub fn index(args: ArgMatches) {
     if inpath.extension() == Some(OsStr::new("gz")) {
         error!("Attempted to index compressed file: {:?}", inpath);
     }
-    let separator = c.value_of("separator").unwrap_or("|");
+    let separator = c.value_of("separator").unwrap();
     info!("Using separator: {:?};", separator);
-
-    let id_index = if let Some(val) = c.value_of("id-index") {
-        val.parse()
-            .expect("Could not parse provided id-index as integer")
-    } else {
-        1
-    };
+    let id_index = c
+        .value_of("id-index")
+        .unwrap()
+        .parse()
+        .expect("Could not parse provided id-index as integer");
     info!("Using id index: {:?};", id_index);
-
     info!("Indexing: {:?};", inpath);
     let fasta_index = FastaIndex::new(&inpath, separator, id_index);
     let outpath = inpath.with_extension("index");
@@ -103,8 +108,16 @@ pub fn subset(args: ArgMatches) {
 pub fn lengths(args: ArgMatches) {
     let c = args.subcommand_matches("lengths").unwrap();
     let inpath = Path::new(c.value_of("input").unwrap());
+    let separator = c.value_of("separator").unwrap();
+    info!("Using separator: {:?};", separator);
+    let id_index = c
+        .value_of("id-index")
+        .unwrap()
+        .parse()
+        .expect("Could not parse provided id-index as integer");
+    info!("Using id index: {:?};", id_index);
     info!("Getting sequence lengths for: {:?};", inpath);
-    let lengths = FastaLengths::from_fasta(&inpath);
+    let lengths = FastaLengths::from_fasta(&inpath, separator, id_index);
     let outpath = inpath.with_extension("lengths");
     info!("Writing lengths to: {:?};", outpath);
     lengths
