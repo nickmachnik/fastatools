@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Added
+- add description separator and index of accession as global variables
 
 ## [0.1.0]
 
