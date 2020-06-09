@@ -10,9 +10,9 @@ use std::path::Path;
 pub fn accessions(args: ArgMatches) {
     let c = args.subcommand_matches("accessions").unwrap();
     let inpath = Path::new(c.value_of("input").unwrap());
-    let separator = c.value_of("separator").unwrap();
+    let separator = args.value_of("separator").unwrap();
     info!("Using separator: {:?};", separator);
-    let id_index = c
+    let id_index = args
         .value_of("id-index")
         .unwrap()
         .parse()
@@ -33,9 +33,9 @@ pub fn index(args: ArgMatches) {
     if inpath.extension() == Some(OsStr::new("gz")) {
         error!("Attempted to index compressed file: {:?}", inpath);
     }
-    let separator = c.value_of("separator").unwrap();
+    let separator = args.value_of("separator").unwrap();
     info!("Using separator: {:?};", separator);
-    let id_index = c
+    let id_index = args
         .value_of("id-index")
         .unwrap()
         .parse()
@@ -108,9 +108,9 @@ pub fn subset(args: ArgMatches) {
 pub fn lengths(args: ArgMatches) {
     let c = args.subcommand_matches("lengths").unwrap();
     let inpath = Path::new(c.value_of("input").unwrap());
-    let separator = c.value_of("separator").unwrap();
+    let separator = args.value_of("separator").unwrap();
     info!("Using separator: {:?};", separator);
-    let id_index = c
+    let id_index = args
         .value_of("id-index")
         .unwrap()
         .parse()
