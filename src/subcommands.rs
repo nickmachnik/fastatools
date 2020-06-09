@@ -1,5 +1,6 @@
 use clap::ArgMatches;
-use fasta::{FastaAccessions, FastaEntry, FastaIndex, FastaLengths};
+use fasta::index::FastaIndex;
+use fasta::pieces::{FastaAccessions, FastaEntry, FastaLengths};
 use log::{error, info};
 use rayon::prelude::*;
 use std::ffi::OsStr;
@@ -9,7 +10,7 @@ use std::path::Path;
 pub fn accessions(args: ArgMatches) {
     let c = args.subcommand_matches("accessions").unwrap();
     let inpath = Path::new(c.value_of("input").unwrap());
-    let accessions = FastaAccessions::from_fasta(&inpath);
+    let accessions = FastaAccessions::from_fasta(&inpaths);
     let outpath = inpath.with_extension("accessions");
     info!("Writing accessions to: {:?};", outpath);
     accessions
@@ -83,7 +84,7 @@ pub fn subset(args: ArgMatches) {
     let index = FastaIndex::from_json(index_path).expect("Reading index from file failed!");
     // load ids
     let mut ids = Vec::new();
-    for line in BufReader::new(&mut fasta::open(id_path)).lines() {
+    for line in BufReader::new(&mut fasta::helpers::open(id_path)).lines() {
         let l = line.unwrap();
         if l != "" {
             ids.push(l);
