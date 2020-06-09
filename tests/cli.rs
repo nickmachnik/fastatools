@@ -3,9 +3,17 @@ use predicates::prelude::*;
 use std::process::Command;
 
 #[test]
-fn test_index_cmd_success() -> Result<(), Box<dyn std::error::Error>> {
+fn test_index_cmd_success_uniprot() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin("fastatools")?;
     cmd.arg("index").arg("resources/test.fasta");
+    cmd.assert().stderr(predicate::str::contains("All done."));
+    Ok(())
+}
+
+#[test]
+fn test_index_cmd_success_id_only() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("fastatools")?;
+    cmd.arg("index").arg("resources/test_short_desc.fasta");
     cmd.assert().stderr(predicate::str::contains("All done."));
     Ok(())
 }
