@@ -34,6 +34,24 @@ fn test_accessions_cmd_success_uniprot() -> Result<(), Box<dyn std::error::Error
     Ok(())
 }
 
+#[test]
+fn test_get_entry_cmd_success_uniprot() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("fastatools")?;
+    cmd.arg("get-entry")
+        .arg("resources/test.fasta")
+        .arg("resources/test.index")
+        .arg("H0VS30");
+    let descr = "tr|H0VS30|H0VS30_CAVPO Receptor protein serine/threonine kinase OS=Cavia porcellus OX=10141 GN=TGFBR1 PE=3 SV=2";
+    let seq = "MEAAAAAPRHQLLLLMLVAAAATLLPGAKALQCFCQLCAKDNYTCVTDGLCFVSITETTDRIIHNTMCIAEIDLIPRDRPFVCAPSSKTGAVTTTHCCNQDHCNKIELPTTEKQS\
+    SGLGPVELAAVIAGPVCFVCISLMLMVYICHNRTVIHHRVPNEEDPSLDRPFISEGTTLKDLIYDMTTSGSGSGLPLLVQRTIARTIVLQESIGKGRFGEVWRGKWRGEEVAVKIFSSREERSWFR\
+    EAEIYQTVMLRHENILGFIAADNKDNGTWTQLWLVSDYHEHGSLFDYLNRYTVTVEGMIKLALSTASGLAHLHMEIVGTQGKPAIAHRDLKSKNILVKKNGTCCIADLGLAVRHDSATDTIDIAPN\
+    HRVGTKRYMAPEVLDDSINMKHFESFKRADIYAMGLVFWEIARRCSIGGIHEDYQLPYYDLVPSDPSVEEMRKVVCEQKLRPNIPNRWQSCEALRVMAKIMRECWYANGAARLTALRIKKTLSQLS\
+    QQEGIKMSFVVCH";
+    cmd.assert().stdout(predicate::str::contains(descr));
+    cmd.assert().stdout(predicate::str::contains(seq));
+    Ok(())
+}
+
 // #[test]
 // fn whole_workflow() -> Result<(), Box<dyn std::error::Error>> {
 //     let mut cmd = Command::cargo_bin("kit")?;
