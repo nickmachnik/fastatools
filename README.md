@@ -4,7 +4,7 @@
 
 ## Installing
 
-Download this repo to your target location and build with [cargo](https://github.com/rust-lang/cargo):
+To use the latest unreleased version, download this repo and build it with [cargo](https://github.com/rust-lang/cargo):
 ```
 git clone https://github.com/nickmachnik/fastatools.git
 cd fastatools
