@@ -18,6 +18,22 @@ fn test_index_cmd_success_id_only() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[test]
+fn test_accessions_cmd_success_id_only() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("fastatools")?;
+    cmd.arg("accessions").arg("resources/test.fasta");
+    cmd.assert().stderr(predicate::str::contains("All done."));
+    Ok(())
+}
+
+#[test]
+fn test_accessions_cmd_success_uniprot() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("fastatools")?;
+    cmd.arg("accessions").arg("resources/test_short_desc.fasta");
+    cmd.assert().stderr(predicate::str::contains("All done."));
+    Ok(())
+}
+
 // #[test]
 // fn whole_workflow() -> Result<(), Box<dyn std::error::Error>> {
 //     let mut cmd = Command::cargo_bin("kit")?;
