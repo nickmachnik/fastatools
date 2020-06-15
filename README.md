@@ -1,5 +1,5 @@
 ![Rust](https://github.com/nickmachnik/fastatools/workflows/Rust/badge.svg?branch=master)
-![Build Status](https://travis-ci.org/nickmachnik/fastatools.svg?branch=master)](https://travis-ci.org/nickmachnik/fastatools)
+![Build Status](https://travis-ci.org/nickmachnik/fastatools.svg?branch=master)
 
 # fastatools
 
