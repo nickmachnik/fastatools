@@ -1,3 +1,5 @@
+![Rust](https://github.com/nickmachnik/fastatools/workflows/Rust/badge.svg?branch=master)
+
 # fastatools
 
 `fastatools` is a command line application written in Rust that provides methods for fast parsing, indexing and manipulating FASTA files.
