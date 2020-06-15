@@ -7,6 +7,27 @@
 
 ## Installing
 
+### Latest release (Linux only)
+
+Download the latest [release](https://github.com/nickmachnik/fastatools/releases/latest) to a directory in which you would like to keep the binary.
+For example:
+
+```
+cd
+mkdir ./.fastatools
+cd .fastatools
+wget https://github.com/nickmachnik/fastatools/releases/download/v0.1.0/fastatools-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
+tar -xf fastatools-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
+```
+
+Add that directory to your path. On Ubuntu you could add this line to your `.bashrc`:
+
+```
+export PATH="~/.fastatools:$PATH"
+```
+
+### Compile from scratch
+
 To use the latest unreleased version, download this repo and build it with [cargo](https://github.com/rust-lang/cargo):
 ```
 git clone https://github.com/nickmachnik/fastatools.git
