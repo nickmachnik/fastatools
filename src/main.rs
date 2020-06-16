@@ -146,7 +146,7 @@ fn main() {
         .subcommand(lengths)
         .subcommand(accessions)
         .subcommand(get_entry)
-        .setting(AppSettings::ArgRequiredElseHelp)
+        .setting(AppSettings::SubcommandRequiredElseHelp)
         .get_matches();
 
     match args.subcommand_name() {
