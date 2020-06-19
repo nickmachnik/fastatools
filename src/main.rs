@@ -31,8 +31,7 @@ fn main() {
         .help(
             "Separator string in the description file. \
                     Is used to split the description and get the sequence ID, \
-                    assumed to be at the first position of the split description.\
-                    Default: `|`",
+                    assumed to be at the first position of the split description.",
         );
 
     let id_index = Arg::with_name("id-index")
@@ -44,8 +43,7 @@ fn main() {
         .help(
             "0-based index of the description field that is used \
                     as a unique sequence id after splitting with the specified \
-                    separator. \
-                    Default: `1`",
+                    separator.",
         );
 
     let index = SubCommand::with_name("index")
