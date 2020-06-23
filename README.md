@@ -62,6 +62,10 @@ export PATH="~/.fastatools:$PATH"
 fastatools -h
 ```
 
+## Contributing & Suggestions
+
+This project grows with my own needs. Feature suggestions and pull requests are welcome!
+
 ## License
 
 Double licensed under either of
