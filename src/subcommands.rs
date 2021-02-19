@@ -91,7 +91,7 @@ pub fn subset(args: ArgMatches) {
     let mut ids = Vec::new();
     for line in BufReader::new(&mut fasta::helpers::open(id_path)).lines() {
         let l = line.unwrap();
-        if l != "" {
+        if !l.is_empty() {
             ids.push(l);
         }
     }
@@ -123,5 +123,26 @@ pub fn lengths(args: ArgMatches) {
     lengths
         .to_json(&outpath)
         .expect("Writing the lengths failed!");
+    info!("All done.");
+}
+
+pub fn max_length(args: ArgMatches) {
+    let c = args.subcommand_matches("max-length").unwrap();
+    let inpath = Path::new(c.value_of("input").unwrap());
+    let separator = args.value_of("separator").unwrap();
+    info!("Using separator: {:?};", separator);
+    let id_index = args
+        .value_of("id-index")
+        .unwrap()
+        .parse()
+        .expect("Could not parse provided id-index as integer");
+    info!("Using id index: {:?};", id_index);
+    info!("Getting sequence lengths for: {:?};", inpath);
+    let lengths = FastaLengths::from_fasta(&inpath, separator, id_index);
+    info!(
+        "The longest sequence in {:?} is {} characters long.;",
+        inpath,
+        lengths.max().unwrap()
+    );
     info!("All done.");
 }

@@ -1,5 +1,5 @@
 use chrono::Local;
-use clap::{App, AppSettings, Arg, SubCommand};
+use clap::{crate_version, App, AppSettings, Arg, SubCommand};
 use env_logger::Builder;
 use log::LevelFilter;
 use std::io::Write;
@@ -85,6 +85,16 @@ fn main() {
                 .help("Path to input fasta file"),
         );
 
+    let max_length = SubCommand::with_name("max-length")
+        .about("Returns the maximal sequence length in fasta file.")
+        .arg(
+            Arg::with_name("input")
+                .required(true)
+                .takes_value(true)
+                .index(1)
+                .help("Path to input fasta file"),
+        );
+
     let subset = SubCommand::with_name("subset")
         .about("Subsets a fasta file with a set of protein ids protein ids. Print to stdout.")
         .arg(
@@ -134,7 +144,7 @@ fn main() {
         );
 
     let args = App::new("fastatools")
-        .version("0.1.0")
+        .version(crate_version!())
         .author("Nick Noel Machnik <nick.machnik@gmail.com>")
         .about("Toolset for the manipulation of fasta files.")
         .arg(id_index)
@@ -144,6 +154,7 @@ fn main() {
         .subcommand(lengths)
         .subcommand(accessions)
         .subcommand(get_entry)
+        .subcommand(max_length)
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .get_matches();
 
@@ -162,6 +173,9 @@ fn main() {
         }
         Some("get-entry") => {
             subcommands::get_entry(args);
+        }
+        Some("max-length") => {
+            subcommands::max_length(args);
         }
         Some(other) => unimplemented!("{}", other),
         None => panic!("what is supposed to happen here"),
